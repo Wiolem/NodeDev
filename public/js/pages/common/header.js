@@ -21,7 +21,7 @@ Header.template = `
                         <a href="/">首页</a>
                     </li>
                     <li>
-                        <a href="/list.html">列表页</a>
+                        <a href="/list.html">职位管理</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right js-right">
@@ -49,7 +49,7 @@ $.extend(Header.prototype, {
     },
     handleGetLoginSuccess(res) {
         if (res && res.data && res.data.isLogin) {
-            this.createLogout();
+            this.createLogout(res.data.isLogin);
         } else {
             this.createLogin();
             this.createRegister();
@@ -66,7 +66,7 @@ $.extend(Header.prototype, {
     createRegister() {
         this.register = new Register(this.rightArea, this.element);
     },
-    createLogout() {
-        this.logout = new Logout(this.rightArea);
+    createLogout(username) {
+        this.logout = new Logout(this.rightArea,username);
     }
 })
