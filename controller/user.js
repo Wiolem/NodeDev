@@ -57,7 +57,7 @@ module.exports = {
         res.json({
             ret: true,
             data: {
-                isLogin: req.session.username ? true : false
+                isLogin: req.session.username ? req.session.username : false
             }
         })
     },
