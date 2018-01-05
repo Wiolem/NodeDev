@@ -4,16 +4,18 @@ var Position = mongoose.model('position', {
     company: String,
     position: String,
     salary: String,
-    address: String
+    address: String,
+    filename: String
 });
 
 module.exports = {
-    addPosition(company, position, salary, address, callback) {
+    addPosition(company, position, salary, address, filename, callback) {
         var position = new Position({
             company,
             position,
             salary,
-            address
+            address,
+            filename
         });
         position.save(err => callback(err));
     },

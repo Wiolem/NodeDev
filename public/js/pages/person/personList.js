@@ -12,6 +12,7 @@ PersonList.Temp = `
             <th>职位名称</th>
             <th>期望薪资</th>
             <th>期望城市</th>
+            <th>头像</th>
             <th>操作</th>
         </thead>
         <tbody class="js-tbody">
@@ -26,7 +27,7 @@ $.extend(PersonList.prototype, {
         this.createSalaryList();
         this.bindEvents();
     },
-    createSalaryList(){
+    createSalaryList() {
         this.salaryList = new SalaryList(this.container);
     },
     createUpdatePerson() {
@@ -98,6 +99,7 @@ $.extend(PersonList.prototype, {
         var str = "";
         if (items) {
             items.forEach(function(value, index) {
+                var filename = value.filename ? value.filename : "1515133831595Tamara Bellis  2017-04-11 03-35-52 .jpg"
                 str += `
                 <tr class="position-item">
                   <td>${index + 1}</td>
@@ -105,6 +107,7 @@ $.extend(PersonList.prototype, {
                   <td>${value.position}</td>
                   <td>${value.salary}&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-default js-salary-btn"  data-toggle="modal" data-target=".js-salary-modal" data-salary="${value.salary}">可选</button></td>
                   <td>${value.address}</td>
+                  <td><img style="width:30px;height:30px;" alt="" class="img-circle" src="/uploads/${filename}" alt="" /></td>
                   <td>
                     <div class="btn-group" role="group" aria-label="...">
                       <button type="button" data-toggle="modal" data-target=".js-update-person-modal" class="btn btn-warning js-update" data-id="${value._id}">修改</button>

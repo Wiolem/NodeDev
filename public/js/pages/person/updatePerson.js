@@ -34,6 +34,11 @@ UpdatePerson.ModelTemp = `
               <label for="update-person-address">期望地点</label>
               <input type="text" class="form-control js-address" id="update-person-address" placeholder="请输入办公地点">
             </div>
+            <div class="form-group">
+              <label for="exampleInputFile">头像</label>
+              <input type="file" class="js-avatar" id="exampleInputFile">
+              <p class="help-block"></p>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary js-submit">提交</button>
@@ -60,18 +65,19 @@ $.extend(UpdatePerson.prototype, {
         this.positionElement = this.element.find(".js-position");
         this.salaryElement = this.element.find(".js-salary");
         this.addressElement = this.element.find(".js-address");
+        this.avatarElement = this.element.find(".js-avatar");
         this.container.append(this.element);
     },
     showItem(id) {
         $.ajax({
-            url:"/api/getPerson",
-            data:{
-                id:id
+            url: "/api/getPerson",
+            data: {
+                id: id
             },
-            success:$.proxy(this.handleGetPersonSuccess,this)
+            success: $.proxy(this.handleGetPersonSuccess, this)
         })
     },
-    handleGetPersonSuccess(res){
+    handleGetPersonSuccess(res) {
         if (res && res.data && res.data.info) {
             var item = res.data.info;
             this.usernameElement.val(item.username);
@@ -89,17 +95,23 @@ $.extend(UpdatePerson.prototype, {
         var username = this.usernameElement.val(),
             position = this.positionElement.val(),
             salary = this.salaryElement.val(),
-            address = this.addressElement.val();
+            address = this.addressElement.val(),
+            avatar = this.avatarElement[0].files[0],
+            id = this.id;
+        var formData = new FormData();
+        formData.append("username", username);
+        formData.append("position", position);
+        formData.append("salary", salary);
+        formData.append("address", address);
+        formData.append("avatar", avatar);
+        formData.append("id", id);
         $.ajax({
-            type: "post",
+            type: "POST",
             url: "/api/updatePerson",
-            data: {
-                username: username,
-                position: position,
-                salary: salary,
-                address: address,
-                id:this.id
-            },
+            cache: false,
+            processData: false,
+            contentType: false,
+            data: formData,
             success: $.proxy(this.handleGetUpdatePerson, this)
         })
     },

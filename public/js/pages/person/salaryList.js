@@ -18,6 +18,7 @@ SalaryList.Temp = `
               <th>职位名称</th>
               <th>薪资</th>
               <th>办公地点</th>
+              <th>LOGO</th>
           </thead>
           <tbody class="js-tbody">
           </tbody>
@@ -56,6 +57,7 @@ $.extend(SalaryList.prototype, {
         if (items) {
             var str = "";
             if (items) {
+                var filename = items.filename ? items.filename :"1515130457220preview.png";
                 items.forEach(function(value, index) {
                     str += `
                     <tr class="position-item">
@@ -64,6 +66,7 @@ $.extend(SalaryList.prototype, {
                       <td>${value.position}</td>
                       <td>${value.salary}</td>
                       <td>${value.address}</td>
+                      <td><img style="width:30px;height:30px;" alt="" class="img-rounded" src="/uploads/${filename}" alt="" /></td>
                     </tr>`;
                 });
                 this.tbodyElement.html(str);

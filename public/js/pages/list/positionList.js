@@ -12,6 +12,7 @@ PositionList.Temp = `
             <th>职位名称</th>
             <th>薪资</th>
             <th>办公地点</th>
+            <th>LOGO</th>
             <th>操作</th>
         </thead>
         <tbody class="js-tbody">
@@ -90,6 +91,7 @@ $.extend(PositionList.prototype, {
         var str = "";
         if (items) {
             items.forEach(function(value, index) {
+                var filename = value.filename ? value.filename :"1515130457220preview.png";
                 str += `
                 <tr class="position-item">
                   <td>${index + 1}</td>
@@ -97,6 +99,7 @@ $.extend(PositionList.prototype, {
                   <td>${value.position}</td>
                   <td>${value.salary}</td>
                   <td>${value.address}</td>
+                  <td><img style="width:30px;height:30px;" alt="" class="img-rounded" src="/uploads/${filename}" alt="" /></td>
                   <td>
                     <div class="btn-group" role="group" aria-label="...">
                       <button type="button" data-toggle="modal" data-target=".js-updatepos-modal" class="btn btn-warning js-update" data-id="${value._id}">修改</button>

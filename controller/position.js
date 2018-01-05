@@ -8,7 +8,9 @@ module.exports = {
             salary,
             address
         } = req.body;
-        positionModel.addPosition(company, position, salary, address, (err) => {
+        const filename = req.file ? req.file.filename : "";
+         console.log(req.body,filename)
+        positionModel.addPosition(company, position, salary, address, filename, (err) => {
             res.json({
                 ret: true,
                 data: {
@@ -66,12 +68,15 @@ module.exports = {
             salary,
             address
         } = req.body;
-        positionModel.updatePositionById(id, {
+        const params = {id,
             company,
             position,
             salary,
-            address
-        }, (result) => {
+            address}
+        if (req.file && req.file.filename) {
+            params.filename = req.file.filename;
+        }
+        positionModel.updatePositionById(id, params , (result) => {
             res.json({
                 ret: true,
                 data: {
@@ -81,23 +86,38 @@ module.exports = {
         })
     },
     getSalaryList(req, res) {
-        const min = parseInt(req.query.salary.split("-")[0], 10),
-              max = parseInt(req.query.salary.split("-")[1], 10);
+        let salary = req.query.salary;
+        // if (salary.includes("+")) {
+        //     const min = parseInt(salary, 10),
+        //         max = min;
+        // } else {
+            const min = parseInt(salary.split("-")[0], 10),
+                max = parseInt(salary.split("-")[1], 10);
+        //}
         let arr = [];
         positionModel.getPosition({}, (result) => {
-            result.forEach((value, index) => {
-                const itemMin = parseInt(value.salary.split("-")[0], 10);
-                const itemMax = parseInt(value.salary.split("-")[1], 10);
-                if (itemMin >= min && itemMax <= max) {
-                    arr.push(value);
-                }
-            });
-            res.json({
-                ret: true,
-                data: {
-                    list: arr
-                }
-            })
+            if (result && result !== "error") {
+                result.forEach((item,index)=>{
+                    // console.log(item.salary)
+                    // if (item.salary.includes("+")) {
+                    //     const itemMin = parseInt(item.salary, 10);
+                    //     const itemMax = itemMin;
+                    //     console.log(itemMin, itemMax)
+                    // } else {
+                        const itemMin = parseInt(item.salary.split("-")[0], 10);
+                        const itemMax = parseInt(item.salary.split("-")[1], 10);
+                    //}
+                    if (itemMin >= min && itemMax <= max) {
+                        arr.push(item);
+                    }
+                })
+                res.json({
+                    ret: true,
+                    data: {
+                        list: arr
+                    }
+                })
+            }
         })
     }
 }

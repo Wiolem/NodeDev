@@ -38,6 +38,11 @@ AddPosition.ModelTemp = `
               <label for="addpos-address">办公地点</label>
               <input type="text" class="form-control js-address" id="addpos-address" placeholder="请输入办公地点">
             </div>
+            <div class="form-group">
+              <label for="exampleInputFile">公司LOGO</label>
+              <input type="file" class="js-logo" id="exampleInputFile">
+              <p class="help-block"></p>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary js-submit">提交</button>
@@ -73,17 +78,23 @@ $.extend(AddPosition.prototype, {
         var company = this.model.find(".js-company").val(),
             position = this.model.find(".js-position").val(),
             salary = this.model.find(".js-salary").val(),
-            address = this.model.find(".js-address").val();
-        console.log(company, position, salary, address);
+            address = this.model.find(".js-address").val(),
+            logo = this.model.find(".js-logo")[0].files[0];
+
+        var formData = new FormData();
+        formData.append("company", company);
+        formData.append("position", position);
+        formData.append("salary", salary);
+        formData.append("address", address);
+        formData.append("logo", logo);
+
         $.ajax({
-            type: "post",
+            type: "POST",
             url: "/api/addPosition",
-            data: {
-                company: company,
-                position: position,
-                salary: salary,
-                address: address
-            },
+            cache: false,
+            processData: false,
+            contentType: false,
+            data: formData,
             success: $.proxy(this.handleGetAddPositon, this)
         })
     },

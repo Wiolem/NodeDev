@@ -1,22 +1,23 @@
 const personModel = require("../model/person.js")
 module.exports = {
-    addPerson(req,res){
+    addPerson(req, res) {
         const {
             username,
             position,
             salary,
             address
         } = req.body;
-        personModel.addPerson(username,position,salary,address,(err)=>{
+        const filename = req.file.filename ? req.file.filename : "";
+        personModel.addPerson(username, position, salary, address, filename, (err) => {
             res.json({
-                ret:true,
-                data:{
-                    inserted:!err
+                ret: true,
+                data: {
+                    inserted: !err
                 }
             })
         })
     },
-    getPersonListInfo(req,res){
+    getPersonListInfo(req, res) {
         const {
             size,
             page
@@ -37,7 +38,7 @@ module.exports = {
             }
         })
     },
-    deletePersonById(req,res){
+    deletePersonById(req, res) {
         personModel.deletePersonById(req.query.id, (result) => {
             res.json({
                 ret: true,
@@ -47,7 +48,7 @@ module.exports = {
             })
         })
     },
-    getPersonById(req,res){
+    getPersonById(req, res) {
         personModel.getPersonById(req.query.id, (result) => {
             res.json({
                 ret: true,
@@ -57,7 +58,7 @@ module.exports = {
             })
         })
     },
-    updatePersonById(req,res){
+    updatePersonById(req, res) {
         const {
             id,
             username,
@@ -65,12 +66,16 @@ module.exports = {
             salary,
             address
         } = req.body;
-        personModel.updatePersonById(id, {
+        const params = {
             username,
             position,
             salary,
             address
-        }, (result) => {
+        }
+        if (req.file && req.file.filename) {
+            params.filename = req.file.filename;
+        }
+        personModel.updatePersonById(id, params, (result) => {
             res.json({
                 ret: true,
                 data: {

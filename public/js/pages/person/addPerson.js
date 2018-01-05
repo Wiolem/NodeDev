@@ -38,6 +38,11 @@ AddPerson.ModelTemp = `
               <label for="add-person-address">期望办公地点</label>
               <input type="text" class="form-control js-address" id="add-person-address" placeholder="请输入办公地点">
             </div>
+            <div class="form-group">
+              <label for="exampleInputFile">头像</label>
+              <input type="file" class="js-avatar" id="exampleInputFile">
+              <p class="help-block"></p>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary js-submit">提交</button>
@@ -73,17 +78,21 @@ $.extend(AddPerson.prototype, {
         var username = this.model.find(".js-username").val(),
             position = this.model.find(".js-position").val(),
             salary = this.model.find(".js-salary").val(),
-            address = this.model.find(".js-address").val();
-        console.log(username, position, salary, address);
+            address = this.model.find(".js-address").val(),
+            avatar = this.model.find(".js-avatar")[0].files[0];
+        var formData = new FormData();
+        formData.append("username", username);
+        formData.append("position", position);
+        formData.append("salary", salary);
+        formData.append("address", address);
+        formData.append("avatar", avatar);
         $.ajax({
-            type: "post",
+            type: "POST",
             url: "/api/addPerson",
-            data: {
-                username: username,
-                position: position,
-                salary: salary,
-                address: address
-            },
+            cache: false,
+            processData: false,
+            contentType: false,
+            data: formData,
             success: $.proxy(this.handleGetAddPerson, this)
         })
     },

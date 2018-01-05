@@ -4,15 +4,17 @@ var Person = mongoose.model('person', {
     username: String,
     position: String,
     salary: String,
-    address: String
+    address: String,
+    filename: String
 });
 module.exports = {
-    addPerson(username, position, salary, address, callback) {
+    addPerson(username, position, salary, address, filename, callback) {
         var person = new Person({
             username,
             position,
             salary,
-            address
+            address,
+            filename
         });
         person.save(err => callback(err))
     },
