@@ -37,7 +37,7 @@ UpdatePosition.ModelTemp = `
             <div class="form-group">
               <label for="exampleInputFile">公司LOGO</label>
               <input type="file" class="js-logo" id="exampleInputFile">
-              <p class="help-block"></p>
+              <img style="width:150px;height:150px;margin:8px;" src="" alt="" class="img-thumbnail js-logo-img">
             </div>
           </div>
           <div class="modal-footer">
@@ -80,6 +80,9 @@ $.extend(UpdatePosition.prototype, {
     handleGetPositionSuccess(res) {
         if (res && res.data && res.data.info) {
             var item = res.data.info;
+            var thumImg = this.element.find(".js-logo-img");
+            var filename = item.filename ? item.filename : "1515130457220preview.png";
+            thumImg.attr("src","/uploads/" + filename);
             this.companyElement.val(item.company);
             this.positionElement.val(item.position);
             this.salaryElement.val(item.salary);
@@ -88,8 +91,19 @@ $.extend(UpdatePosition.prototype, {
         }
     },
     bindEvents() {
+        var fileBtn = this.element.find(".js-logo");
+        fileBtn.on("change",$.proxy(this.handleFileChange,this))
         var submitBtn = this.element.find(".js-submit");
         submitBtn.on("click", $.proxy(this.handleSubmitBtnClick, this));
+    },
+    handleFileChange(e){
+        var fileThum = this.element.find(".js-logo-img");
+        var file = e.target.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e) {
+            fileThum.attr('src', e.target.result);
+        };
     },
     handleSubmitBtnClick() {
         var company = this.companyElement.val(),

@@ -3,18 +3,8 @@ function Pagination(container) {
     this.init();
 }
 Pagination.Temp = `
-<nav aria-label="Page navigation" class="js-pagination">
-  <ul class="pagination">
-    <li class="js-previous">
-      <a href="javascript:;" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li class="js-next">
-      <a href="javascript:;" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
+<nav aria-label="Page navigation">
+  <ul class="pagination js-pagination">
   </ul>
 </nav>
 `
@@ -39,9 +29,11 @@ $.extend(Pagination.prototype, {
     },
     setTotalPage(total) {
         this.element.html(Pagination.Temp);
-        this.prevBtn = this.element.find(".js-previous");
-        for (var i = total; i > 0; i--) {
-            this.prevBtn.after(`<li><a href="javascript:;">${i}</a></li>`);
+        var pagination = this.element.find(".js-pagination");
+        var str = ""
+        for (var i = 1; i <= total; i++) {
+            str += `<li><a href="javascript:;">${i}</a></li>`;
         }
+        pagination.html(str);
     }
 })

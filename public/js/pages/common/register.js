@@ -3,9 +3,10 @@ function Register(container, modelContainer) {
     this.modelContainer = modelContainer;
     this.init();
 }
+// register 改为 ".js-register-modal"
 Register.btnTemp = `
   <li>
-    <a href='javascript:;' data-toggle='modal' data-target='.js-register-modal'>
+    <a href='javascript:;' data-toggle='modal' data-target='#js-register-modal'>
       注册
     </a>
   </li>`;

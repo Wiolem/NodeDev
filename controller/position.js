@@ -9,7 +9,6 @@ module.exports = {
             address
         } = req.body;
         const filename = req.file ? req.file.filename : "";
-         console.log(req.body,filename)
         positionModel.addPosition(company, position, salary, address, filename, (err) => {
             res.json({
                 ret: true,
@@ -68,15 +67,17 @@ module.exports = {
             salary,
             address
         } = req.body;
-        const params = {id,
+        const params = {
+            id,
             company,
             position,
             salary,
-            address}
+            address
+        }
         if (req.file && req.file.filename) {
             params.filename = req.file.filename;
         }
-        positionModel.updatePositionById(id, params , (result) => {
+        positionModel.updatePositionById(id, params, (result) => {
             res.json({
                 ret: true,
                 data: {
@@ -87,30 +88,28 @@ module.exports = {
     },
     getSalaryList(req, res) {
         let salary = req.query.salary;
-        // if (salary.includes("+")) {
-        //     const min = parseInt(salary, 10),
-        //         max = min;
-        // } else {
-            const min = parseInt(salary.split("-")[0], 10),
+        if (salary === "35k+") {
+            var min = parseInt(salary, 10),
+                max = min;
+        } else {
+            var min = parseInt(salary.split("-")[0], 10),
                 max = parseInt(salary.split("-")[1], 10);
-        //}
+        }
         let arr = [];
         positionModel.getPosition({}, (result) => {
             if (result && result !== "error") {
-                result.forEach((item,index)=>{
-                    // console.log(item.salary)
-                    // if (item.salary.includes("+")) {
-                    //     const itemMin = parseInt(item.salary, 10);
-                    //     const itemMax = itemMin;
-                    //     console.log(itemMin, itemMax)
-                    // } else {
-                        const itemMin = parseInt(item.salary.split("-")[0], 10);
-                        const itemMax = parseInt(item.salary.split("-")[1], 10);
-                    //}
+                result.forEach((item, index) => {
+                    if (item.salary === "35k+") {
+                        var itemMin = parseInt(item.salary, 10),
+                            itemMax = itemMin;
+                    } else {
+                        var itemMin = parseInt(item.salary.split("-")[0], 10),
+                            itemMax = parseInt(item.salary.split("-")[1], 10);
+                    }
                     if (itemMin >= min && itemMax <= max) {
                         arr.push(item);
                     }
-                })
+                });
                 res.json({
                     ret: true,
                     data: {

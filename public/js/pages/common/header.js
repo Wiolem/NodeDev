@@ -39,6 +39,11 @@ $.extend(Header.prototype, {
         this.getSelectIndex();
         this.getLoginInfo();
     },
+    createHeader() {
+        this.element = $(Header.template);
+        this.headerContainer.append(this.element);
+        this.rightArea = this.element.find(".js-right");
+    },
     getSelectIndex() {
         var leftArea = this.element.find(".js-left"),
             leftItems = this.element.find("li");
@@ -53,15 +58,12 @@ $.extend(Header.prototype, {
     handleGetLoginSuccess(res) {
         if (res && res.data && res.data.isLogin) {
             this.createLogout(res.data.isLogin);
+            $(this).trigger("login");
         } else {
             this.createLogin();
             this.createRegister();
+            $(this).trigger("logout");
         }
-    },
-    createHeader() {
-        this.element = $(Header.template);
-        this.headerContainer.append(this.element);
-        this.rightArea = this.element.find(".js-right");
     },
     createLogin() {
         this.login = new Login(this.rightArea, this.element);
@@ -70,6 +72,6 @@ $.extend(Header.prototype, {
         this.register = new Register(this.rightArea, this.element);
     },
     createLogout(username) {
-        this.logout = new Logout(this.rightArea,username);
+        this.logout = new Logout(this.rightArea, username);
     }
 })

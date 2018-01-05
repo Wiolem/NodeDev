@@ -8,3 +8,12 @@
 .position-item td{
     vertical-align: middle!important;
 }
+/* clear btn border */
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn.active.focus {
+    outline: none;
+}

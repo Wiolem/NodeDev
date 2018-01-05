@@ -41,7 +41,7 @@ AddPerson.ModelTemp = `
             <div class="form-group">
               <label for="exampleInputFile">头像</label>
               <input type="file" class="js-avatar" id="exampleInputFile">
-              <p class="help-block"></p>
+              <img style="width:150px;height:150px;margin:8px;" src="" alt="" class="img-circle js-avatar-img">
             </div>
           </div>
           <div class="modal-footer">
@@ -71,8 +71,19 @@ $.extend(AddPerson.prototype, {
         this.container.append(this.model);
     },
     bindEvents() {
+        var fileBtn = this.model.find(".js-avatar");
+        fileBtn.on("change", $.proxy(this.handleFileChange, this))
         var submitBtn = this.model.find(".js-submit");
         submitBtn.on("click", $.proxy(this.handleSubmitBtnClick, this));
+    },
+    handleFileChange(e) {
+        var fileThum = this.model.find(".js-avatar-img");
+        var file = e.target.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e) {
+            fileThum.attr('src', e.target.result);
+        };
     },
     handleSubmitBtnClick() {
         var username = this.model.find(".js-username").val(),
