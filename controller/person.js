@@ -1,32 +1,31 @@
-const positionModel = require("../model/position.js")
-
+const personModel = require("../model/person.js")
 module.exports = {
-    addPosition(req, res) {
+    addPerson(req,res){
         const {
-            company,
+            username,
             position,
             salary,
             address
         } = req.body;
-        positionModel.addPosition(company, position, salary, address, (err) => {
+        personModel.addPerson(username,position,salary,address,(err)=>{
             res.json({
-                ret: true,
-                data: {
-                    inserted: !err
+                ret:true,
+                data:{
+                    inserted:!err
                 }
             })
         })
     },
-    getListInfo(req, res) {
+    getPersonListInfo(req,res){
         const {
             size,
             page
         } = req.body;
         let totalPage = 0;
-        positionModel.getPosition({}, (result) => {
+        personModel.getPersonListInfo({}, (result) => {
             if (result && result !== "error") {
                 totalPage = Math.ceil(result.length / size);
-                positionModel.getPositionByPage(size, page, (result) => {
+                personModel.getPersonByPage(size, page, (result) => {
                     res.json({
                         ret: true,
                         data: {
@@ -38,8 +37,8 @@ module.exports = {
             }
         })
     },
-    deletePositionById(req, res) {
-        positionModel.deletePositionById(req.query.id, (result) => {
+    deletePersonById(req,res){
+        personModel.deletePersonById(req.query.id, (result) => {
             res.json({
                 ret: true,
                 data: {
@@ -48,8 +47,8 @@ module.exports = {
             })
         })
     },
-    getPositionById(req, res) {
-        positionModel.getPositionById(req.query.id, (result) => {
+    getPersonById(req,res){
+        personModel.getPersonById(req.query.id, (result) => {
             res.json({
                 ret: true,
                 data: {
@@ -58,16 +57,16 @@ module.exports = {
             })
         })
     },
-    updatePositionById(req, res) {
+    updatePersonById(req,res){
         const {
             id,
-            company,
+            username,
             position,
             salary,
             address
         } = req.body;
-        positionModel.updatePositionById(id, {
-            company,
+        personModel.updatePersonById(id, {
+            username,
             position,
             salary,
             address
@@ -76,26 +75,6 @@ module.exports = {
                 ret: true,
                 data: {
                     update: (result && result !== "error") ? true : false
-                }
-            })
-        })
-    },
-    getSalaryList(req, res) {
-        const min = parseInt(req.query.salary.split("-")[0], 10),
-              max = parseInt(req.query.salary.split("-")[1], 10);
-        let arr = [];
-        positionModel.getPosition({}, (result) => {
-            result.forEach((value, index) => {
-                const itemMin = parseInt(value.salary.split("-")[0], 10);
-                const itemMax = parseInt(value.salary.split("-")[1], 10);
-                if (itemMin >= min && itemMax <= max) {
-                    arr.push(value);
-                }
-            });
-            res.json({
-                ret: true,
-                data: {
-                    list: arr
                 }
             })
         })

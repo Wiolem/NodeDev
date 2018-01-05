@@ -23,6 +23,9 @@ Header.template = `
                     <li>
                         <a href="/list.html">职位管理</a>
                     </li>
+                    <li>
+                        <a href="/person.html">求职者管理</a>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right js-right">
                 </ul>

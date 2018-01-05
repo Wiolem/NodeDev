@@ -1,46 +1,45 @@
 var mongoose = require('../utils/database.js')
 
-var Position = mongoose.model('position', {
-    company: String,
+var Person = mongoose.model('person', {
+    username: String,
     position: String,
     salary: String,
     address: String
 });
-
 module.exports = {
-    addPosition(company, position, salary, address, callback) {
-        var position = new Position({
-            company,
+    addPerson(username, position, salary, address, callback) {
+        var person = new Person({
+            username,
             position,
             salary,
             address
         });
-        position.save(err => callback(err));
+        person.save(err => callback(err))
     },
-    getPosition(params, callback) {
-        Position.find(params)
+    getPersonListInfo(params, callback) {
+        Person.find(params)
             .then(res => callback(res))
             .catch(() => callback("error"))
     },
-    getPositionByPage(size, page, callback) {
-        Position.find({})
+    getPersonByPage(size, page, callback) {
+        Person.find({})
             .limit(parseInt(size))
             .skip((page - 1) * size)
             .then((res) => callback(res))
             .catch(() => callback("error"))
     },
-    deletePositionById(id, callback) {
-        Position.findByIdAndRemove(id)
+    deletePersonById(id, callback) {
+        Person.findByIdAndRemove(id)
             .then(result => callback(result))
             .catch(() => callback("error"));
     },
-    getPositionById(id, callback) {
-        Position.findById(id)
+    getPersonById(id, callback) {
+        Person.findById(id)
             .then(result => callback(result))
             .catch(() => callback("error"))
     },
-    updatePositionById(id, params, callback) {
-        Position.findByIdAndUpdate(id, params)
+    updatePersonById(id, params, callback) {
+        Person.findByIdAndUpdate(id, params)
             .then((result) => callback(result))
             .catch(() => callback("error"))
     }
