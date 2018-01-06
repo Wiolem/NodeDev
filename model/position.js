@@ -43,7 +43,34 @@ module.exports = {
     },
     updatePositionById(id, params, callback) {
         Position.findByIdAndUpdate(id, params)
-            .then((result) => callback(result))
+            .then((result) => callback(arr))
             .catch(() => callback("error"))
+    },
+    getPositionListBySalary(salary, callback) {
+        Position.find({}).then((result) => {
+            if (salary === "35k+") {
+                var min = parseInt(salary, 10),
+                    max = min;
+            } else {
+                var min = parseInt(salary.split("-")[0], 10),
+                    max = parseInt(salary.split("-")[1], 10);
+            }
+            let arr = [];
+            result.forEach((item, index) => {
+                if (item.salary === "35k+") {
+                    var itemMin = parseInt(item.salary, 10),
+                        itemMax = itemMin;
+                } else {
+                    var itemMin = parseInt(item.salary.split("-")[0], 10),
+                        itemMax = parseInt(item.salary.split("-")[1], 10);
+                }
+                if (itemMin >= min && itemMax <= max) {
+                    arr.push(item);
+                }
+            });
+            callback(arr);
+        }).catch(() => {
+            callback([]);
+        })
     }
 }

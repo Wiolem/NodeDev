@@ -42,7 +42,7 @@ $.extend(SalaryList.prototype, {
     },
     showItems(salary) {
         $.ajax({
-            url:"/api/getSalaryList",
+            url:"/api/getPositionListBySalary",
             data:{
                 salary:salary
             },

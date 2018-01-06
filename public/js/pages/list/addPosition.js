@@ -65,6 +65,11 @@ $.extend(AddPosition.prototype, {
     createDom() {
         this.addBtn = $(AddPosition.BtnTemp);
         this.model = $(AddPosition.ModelTemp);
+        this.companyElement = this.model.find(".js-company");
+        this.positionElement = this.model.find(".js-position");
+        this.salaryElement = this.model.find(".js-salary");
+        this.addressElement = this.model.find(".js-address");
+        this.logoElement = this.model.find(".js-logo");
         this.noticeSuccess = this.model.find(".js-succ-notice");
         this.noticeError = this.model.find(".js-err-notice");
         this.container.append(this.addBtn);
@@ -72,9 +77,16 @@ $.extend(AddPosition.prototype, {
     },
     bindEvents() {
         var fileBtn = this.model.find(".js-logo");
-        fileBtn.on("change", $.proxy(this.handleFileChange, this))
-        var submitBtn = this.model.find(".js-submit");
-        submitBtn.on("click", $.proxy(this.handleSubmitBtnClick, this));
+        fileBtn.on("change", $.proxy(this.handleFileChange, this));
+        this.addBtn.on("click",$.proxy(this.handleAddBtnClick,this));
+        this.submitBtn = this.model.find(".js-submit");
+        this.submitBtn.on("click", $.proxy(this.handleSubmitBtnClick, this));
+    },
+    handleAddBtnClick(){
+        this.companyElement.val("");
+        this.positionElement.val("");
+        this.addressElement.val("");
+        this.noticeError.addClass("hide");
     },
     handleFileChange(e) {
         var fileThum = this.model.find(".js-logo-img");
@@ -86,40 +98,48 @@ $.extend(AddPosition.prototype, {
         };
     },
     handleSubmitBtnClick() {
-        var company = this.model.find(".js-company").val(),
-            position = this.model.find(".js-position").val(),
-            salary = this.model.find(".js-salary").val(),
-            address = this.model.find(".js-address").val(),
-            logo = this.model.find(".js-logo")[0].files[0];
+        var company = this.companyElement.val(),
+            position = this.positionElement.val(),
+            salary = this.salaryElement.val(),
+            address = this.addressElement.val(),
+            logo = this.logoElement[0].files[0];
+        if (!(company && position && salary && address)) {
+            this.noticeError.text("对不起，你输入有误")
+            this.noticeError.removeClass("hide");
+        } else {
+            this.noticeError.text("对不起，您所添加的求职者已存在")
+            this.submitBtn.attr("disabled", "disabled");
+            this.noticeError.addClass("hide");
+            var formData = new FormData();
+            formData.append("company", company);
+            formData.append("position", position);
+            formData.append("salary", salary);
+            formData.append("address", address);
+            formData.append("logo", logo);
 
-        var formData = new FormData();
-        formData.append("company", company);
-        formData.append("position", position);
-        formData.append("salary", salary);
-        formData.append("address", address);
-        formData.append("logo", logo);
-
-        $.ajax({
-            type: "POST",
-            url: "/api/addPosition",
-            cache: false,
-            processData: false,
-            contentType: false,
-            data: formData,
-            success: $.proxy(this.handleGetAddPositon, this)
-        })
+            $.ajax({
+                type: "POST",
+                url: "/api/addPosition",
+                cache: false,
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: $.proxy(this.handleGetAddPositon, this)
+            })
+        }
     },
     handleGetAddPositon(res) {
         if (res && res.data && res.data.inserted) {
             this.noticeSuccess.removeClass("hide");
-            setTimeout($.proxy(this.handleModelFade, this), 3000)
+            setTimeout($.proxy(this.handleModelFade, this), 1500)
         } else {
             this.noticeError.removeClass("hide");
-            setTimeout($.proxy(this.handleModelErrorFade, this), 3000)
+            setTimeout($.proxy(this.handleModelErrorFade, this), 1500)
         }
     },
     handleModelFade() {
         this.noticeSuccess.addClass("hide");
+        this.submitBtn.attr("disabled", "");
         this.model.modal("hide");
         $(this).trigger("change");
     },

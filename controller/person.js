@@ -7,7 +7,7 @@ module.exports = {
             salary,
             address
         } = req.body;
-        const filename = req.file.filename ? req.file.filename : "";
+        const filename = req.file ? req.file.filename : "";
         personModel.addPerson(username, position, salary, address, filename, (err) => {
             res.json({
                 ret: true,

@@ -86,37 +86,15 @@ module.exports = {
             })
         })
     },
-    getSalaryList(req, res) {
+    getPositionListBySalary(req, res) {
         let salary = req.query.salary;
-        if (salary === "35k+") {
-            var min = parseInt(salary, 10),
-                max = min;
-        } else {
-            var min = parseInt(salary.split("-")[0], 10),
-                max = parseInt(salary.split("-")[1], 10);
-        }
-        let arr = [];
-        positionModel.getPosition({}, (result) => {
-            if (result && result !== "error") {
-                result.forEach((item, index) => {
-                    if (item.salary === "35k+") {
-                        var itemMin = parseInt(item.salary, 10),
-                            itemMax = itemMin;
-                    } else {
-                        var itemMin = parseInt(item.salary.split("-")[0], 10),
-                            itemMax = parseInt(item.salary.split("-")[1], 10);
-                    }
-                    if (itemMin >= min && itemMax <= max) {
-                        arr.push(item);
-                    }
-                });
-                res.json({
-                    ret: true,
-                    data: {
-                        list: arr
-                    }
-                })
-            }
+        positionModel.getPositionListBySalary(salary, (result) => {
+            res.json({
+                ret: true,
+                data: {
+                    list: result
+                }
+            })
         })
     }
 }

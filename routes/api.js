@@ -15,7 +15,7 @@ router.post('/getListInfo', positionController.getListInfo)
 router.get('/deletePosition', positionController.deletePositionById)
 router.get('/getPosition', positionController.getPositionById)
 router.post('/updatePosition', upload.single('logo'), positionController.updatePositionById)
-router.get('/getSalaryList', positionController.getSalaryList)
+router.get('/getPositionListBySalary', positionController.getPositionListBySalary)
 
 router.post('/addPerson', upload.single('avatar'), personController.addPerson)
 router.post('/getPersonListInfo', personController.getPersonListInfo)
