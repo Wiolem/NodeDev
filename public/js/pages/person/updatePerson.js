@@ -61,6 +61,7 @@ $.extend(UpdatePerson.prototype, {
     createDom() {
         this.element = $(UpdatePerson.ModelTemp);
         this.noticeSuccess = this.element.find(".js-succ-notice");
+        this.noticeError = this.element.find(".js-err-notice");
         this.usernameElement = this.element.find(".js-username");
         this.positionElement = this.element.find(".js-position");
         this.salaryElement = this.element.find(".js-salary");
@@ -132,10 +133,10 @@ $.extend(UpdatePerson.prototype, {
     handleGetUpdatePerson(res) {
         if (res && res.data && res.data.update) {
             this.noticeSuccess.removeClass("hide");
-            setTimeout($.proxy(this.handleModelFade, this), 3000)
+            setTimeout($.proxy(this.handleModelFade, this), 1500)
         } else {
             this.noticeError.removeClass("hide");
-            setTimeout($.proxy(this.handleModelErrorFade, this), 3000)
+            setTimeout($.proxy(this.handleModelErrorFade, this), 1500)
         }
     },
     handleModelFade() {

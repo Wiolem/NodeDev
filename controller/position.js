@@ -78,6 +78,7 @@ module.exports = {
             params.filename = req.file.filename;
         }
         positionModel.updatePositionById(id, params, (result) => {
+            console.log(result)
             res.json({
                 ret: true,
                 data: {
@@ -87,8 +88,11 @@ module.exports = {
         })
     },
     getPositionListBySalary(req, res) {
-        let salary = req.query.salary;
-        positionModel.getPositionListBySalary(salary, (result) => {
+        const {
+            salary,
+            position
+        } = req.query;
+        positionModel.getPositionListBySalary(salary, position, (result) => {
             res.json({
                 ret: true,
                 data: {

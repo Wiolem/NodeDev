@@ -40,11 +40,12 @@ $.extend(SalaryList.prototype, {
         this.tbodyElement = this.element.find(".js-tbody");
         this.container.append(this.element);
     },
-    showItems(salary) {
+    showItems(salary,position) {
         $.ajax({
             url:"/api/getPositionListBySalary",
             data:{
-                salary:salary
+                salary:salary,
+                position:position
             },
             success: $.proxy(this.handleGetSalaryList,this)
         })

@@ -43,11 +43,13 @@ module.exports = {
     },
     updatePositionById(id, params, callback) {
         Position.findByIdAndUpdate(id, params)
-            .then((result) => callback(arr))
+            .then((result) => callback(result))
             .catch(() => callback("error"))
     },
-    getPositionListBySalary(salary, callback) {
-        Position.find({}).then((result) => {
+    getPositionListBySalary(salary, position, callback) {
+        Position.find({
+            position: position
+        }).then((result) => {
             if (salary === "35k+") {
                 var min = parseInt(salary, 10),
                     max = min;

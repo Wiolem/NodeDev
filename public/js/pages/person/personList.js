@@ -49,7 +49,7 @@ $.extend(PersonList.prototype, {
             this.updatePerson.showItem(target.data("id"));
         }
         if (isSalaryClick) {
-            this.salaryList.showItems(target.data("salary"));
+            this.salaryList.showItems(target.data("salary"),target.data("position"));
         }
     },
     deleteItem(id) {
@@ -105,7 +105,7 @@ $.extend(PersonList.prototype, {
                   <td>${index + 1}</td>
                   <td>${value.username}</td>
                   <td>${value.position}</td>
-                  <td>${value.salary}&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-default js-salary-btn"  data-toggle="modal" data-target=".js-salary-modal" data-salary="${value.salary}">可选</button></td>
+                  <td>${value.salary}&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-default js-salary-btn"  data-toggle="modal" data-target=".js-salary-modal" data-salary="${value.salary}" data-position="${value.position}">可选</button></td>
                   <td>${value.address}</td>
                   <td><img style="width:30px;height:30px;" alt="" class="img-circle" src="/uploads/${filename}" alt="" /></td>
                   <td>
