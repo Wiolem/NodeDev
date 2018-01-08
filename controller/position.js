@@ -78,7 +78,6 @@ module.exports = {
             params.filename = req.file.filename;
         }
         positionModel.updatePositionById(id, params, (result) => {
-            console.log(result)
             res.json({
                 ret: true,
                 data: {
