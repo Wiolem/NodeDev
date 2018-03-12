@@ -18,9 +18,8 @@
 ![image](https://github.com/Wiolem/NodeDevDemo/blob/master/picture/add.png)
 
 ## 设计模式
-- 发布/订阅模式
-- 中间人模式
-- 组合模式
+- 观察者模式
+- 中介者模式
 
 ## 工具
 - [boostrap](http://www.bootcss.com/)
